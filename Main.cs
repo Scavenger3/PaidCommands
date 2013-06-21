@@ -81,12 +81,12 @@ namespace PaidCommands
                             {
                                 if (config.Commands[i].Permission != "" && !TShock.Players[who].Group.HasPermission(config.Commands[i].Permission))
                                     break;
-                                if (!TShock.Players[who].Group.HasPermission(tscmd.Permission) && Vault.Vault.ModifyBalance(TShock.Players[who].Name, -config.Commands[i].Cost))
+                                if (tscmd.Permissions.Find(p => TShock.Players[who].Group.HasPermission(p)) == null && Vault.Vault.ModifyBalance(TShock.Players[who].Name, -config.Commands[i].Cost))
                                 {
                                     TShock.Players[who].SendMessage(String.Format("You have been charged {0} to use /{1}", config.Commands[i].Cost, cmd), Color.DarkOrange);
-                                    TShock.Players[who].Group.AddPermission(tscmd.Permission);
+                                    TShock.Players[who].Group.AddPermission(tscmd.Permissions[0]);
                                     TShockAPI.Commands.HandleCommand(TShock.Players[who], text);
-                                    TShock.Players[who].Group.RemovePermission(tscmd.Permission);
+                                    TShock.Players[who].Group.RemovePermission(tscmd.Permissions[0]);
                                     args.Handled = true;
                                 }
                                 break;
